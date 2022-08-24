@@ -19,7 +19,7 @@ RUN apt-get update -qqy &&\
     locale-gen en_US.UTF-8 &&\
     apt-get -qqy update &&\
     apt-get -qqy upgrade --no-install-recommends &&\
-    apt-get -qqy install --no-install-recommends git curl libxss1 vim nano software-properties-common cmake &&\
+    apt-get -qqy install --no-install-recommends git curl libxss1 vim nano software-properties-common cmake openssh-server &&\
     apt-get -q autoremove &&\
     mkdir -p /var/run/sshd &&\
     curl -fsSL https://deb.nodesource.com/setup_${DEFAULT_NODE_VERSION}.x | bash - &&\
