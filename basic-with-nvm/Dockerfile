@@ -12,16 +12,22 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV DEFAULT_NODE_VERSION=16.17.0
+ENV DEBIAN_FRONTEND="noninteractive"
 
-# Upgrade package on image
+# Upgrade package on image, install locales and supporting software, including node, and delete apt cache
 RUN apt-get update -qqy &&\
     apt-get -qqy install locales &&\
     locale-gen en_US.UTF-8 &&\
     apt-get -qqy update &&\
-    DEBIAN_FRONTEND="noninteractive" apt-get -q upgrade -y -o Dpkg::Options::="--force-confnew" --no-install-recommends &&\
-    DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends git curl libxss1 vim nano openssh-server software-properties-common cmake &&\
+    apt-get -qqy upgrade --no-install-recommends &&\
+    apt-get -qqy install --no-install-recommends git curl libxss1 vim nano openssh-server software-properties-common cmake &&\
     apt-get -q autoremove &&\
-    mkdir -p /var/run/sshd
+    mkdir -p /var/run/sshd &&\
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - &&\
+    apt-get -qqy install nodejs build-essential &&\
+    apt-get -q autoremove &&\
+    apt-get -qqy clean &&\
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin
 
 # Add Zowe user
 RUN useradd zowe --shell /bin/bash --create-home &&\
@@ -30,10 +36,7 @@ RUN useradd zowe --shell /bin/bash --create-home &&\
 # Fix OpenSSL problems with TLS 1.2
 COPY openssl.cnf /etc/ssl/openssl.cnf
 
-# Install Node, nvm, plugin prereqs
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs expect build-essential
-
+# Install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 RUN groupadd npmusers && usermod -aG npmusers zowe && usermod -aG npmusers root
 
@@ -45,7 +48,7 @@ USER root
 
 # Get rid of dash and use bash instead
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+RUN dpkg-reconfigure dash
 
 # First move the template file over
 RUN mkdir ${tempDir}
@@ -78,7 +81,6 @@ RUN install_zowe.sh
 RUN su -c "install_zowe.sh" - zowe
 
 # Cleanup
-RUN apt-get -q autoremove && apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
 RUN rm -rdf ${tempDir}
 
 # Standard SSH port

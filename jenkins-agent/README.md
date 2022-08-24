@@ -1,6 +1,6 @@
 # Jenkins Agent
 
-Jenkins build agent with the ability to install the npm keytar package for credential management. Also contains Java 8 and 11, nvm, and other utilities.
+Jenkins build agent with the ability to install the npm keytar package for credential management. Also contains Java 11, nvm, and other utilities.
 
 ## Usage
 
