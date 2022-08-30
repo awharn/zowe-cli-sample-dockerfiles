@@ -1,7 +1,9 @@
 # Zowe CLI Sample Dockerfiles
 
 This repository contains sample dockerfiles that can be used as templates to perform various actions with Zowe CLI in Docker.
-Docker images created based off of these dockerfiles will not be supported. The dockerfiles as presented in this repository are supported.
+Dockerfiles created using these templates will not be supported.
+Docker images created based off of these dockerfiles will not be supported.
+The dockerfiles as presented in this repository are supported.
 
 ## Minimal
 
@@ -22,5 +24,6 @@ Useful for testing the CLI on new versions of Node.
 ## Jenkins Agent
 
 An advanced dockerfile that provides a Jenkins user, JDK 11, JRE 11, and Secure Credential Management.
-Requires additional capabilities to work properly, namely IPC_LOCK, or to be privileged in order for Secure Credential Management to function properly.
+Requires additional capabilities to work properly, namely `IPC_LOCK`, or to be privileged in order for Secure Credential Management to function properly.
 Also includes NVM, a fallback NodeJS installation, customizable entrypoint logic, passwordless sudo, and an auto-unlocking keyring.
+JNLP is not supported on this agent.
