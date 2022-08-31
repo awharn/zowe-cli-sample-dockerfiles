@@ -121,7 +121,7 @@ RUN sed -i -e "/# If not running interactively, don't do anything/r ${tempDir}/d
 # Install zowe
 RUN su -c "install_zowe.sh" - jenkins
 
-RUN printf "\nif test -z \"\$SSH_CONNECTION\"; then\n\techo jenkins | gnome-keyring-daemon --unlock --components=secrets > /dev/null\nfi\n" >> /home/jenkins/.bashrc
+RUN printf "\necho jenkins | gnome-keyring-daemon --unlock --components=secrets > /dev/null\n" >> /home/jenkins/.bashrc
 
 # Cleanup any temp files we have created
 RUN rm -rdf ${tempDir}

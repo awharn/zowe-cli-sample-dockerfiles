@@ -50,6 +50,9 @@ COPY install_zowe.sh ${scriptsDir}
 # Install zowe
 RUN install_zowe.sh
 
+# Uncomment to enable daemon mode by default
+# RUN echo 'export PATH=/home/zowe/.zowe/bin:$PATH' >> ~/.bashrc && zowe daemon enable
+
 # Standard SSH port
 EXPOSE 22
 

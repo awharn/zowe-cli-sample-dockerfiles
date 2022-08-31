@@ -18,4 +18,7 @@ USER zowe
 RUN zowe plugins install @zowe/cics-for-zowe-cli@${ZOWE_VERSION} @zowe/db2-for-zowe-cli@${ZOWE_VERSION} @zowe/ims-for-zowe-cli@${ZOWE_VERSION} @zowe/mq-for-zowe-cli@${ZOWE_VERSION} @zowe/zos-ftp-for-zowe-cli@${ZOWE_VERSION}
 RUN mkdir -p ~/.zowe/settings && echo '{"overrides":{"CredentialManager":false}}' > ~/.zowe/settings/imperative.json
 
+# Uncomment to enable daemon mode by default
+# RUN echo 'export PATH=/home/zowe/.zowe/bin:$PATH' >> ~/.bashrc && zowe daemon enable
+
 CMD ["/bin/bash"]
